@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Raise to Wake</string>
+    <string name="notification_channel_name">Raise to Wake Service</string>
+    <string name="notification_channel_description">Monitors motion to turn on the screen when the phone is lifted.</string>
+    <string name="notification_title">Raise to Wake Active</string>
+    <string name="notification_text">Monitoring movement to wake display</string>
+    <string name="notification_stop_action">Stop Service</string>
+</resources>
