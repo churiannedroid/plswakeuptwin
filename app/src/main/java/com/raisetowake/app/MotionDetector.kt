@@ -29,9 +29,13 @@ class MotionDetector(
     }
 
     fun start(sensorManager: SensorManager) {
-        val accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_GAME)
-    }
+    // true = request the WAKE_UP variant so events are delivered
+    // even while the screen is off and the CPU is suspended.
+    val accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER, true)
+        ?: sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) // fallback if no wake-up variant exists
+
+    sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_GAME)
+}
 
     fun stop(sensorManager: SensorManager) {
         sensorManager.unregisterListener(this)
