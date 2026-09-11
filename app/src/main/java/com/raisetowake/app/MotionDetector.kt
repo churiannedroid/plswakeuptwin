@@ -25,7 +25,7 @@ class MotionDetector(
 
     private fun computeThreshold(value: Float): Float {
         val clamped = value.coerceIn(Prefs.MIN_SENSITIVITY, Prefs.MAX_SENSITIVITY)
-        return (8.5f - clamped * 0.65f).coerceAtLeast(1.5f)
+        return (2.5f - clamped * 0.1f).coerceAtLeast(0.3f)
     }
 
     fun start(sensorManager: SensorManager) {
