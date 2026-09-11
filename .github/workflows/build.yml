@@ -1,19 +1,12 @@
-name: Build APK
+name: Build Debug APK
 
 on:
   push:
     branches: [ "main" ]
-    tags: [ "v*.*.*" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   build:
-    name: Build debug APK
     runs-on: ubuntu-latest
 
     steps:
@@ -23,37 +16,17 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build debug APK
-        run: gradle assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --no-daemon
 
-      - name: Locate built APK
-        id: apk
-        run: |
-          APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
-          if [ -z "$APK_PATH" ]; then
-            echo "No APK found under app/build/outputs/apk/debug" >&2
-            exit 1
-          fi
-          echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
-
-      - name: Upload APK as a workflow artifact
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: raise-to-wake-debug-apk
-          path: ${{ steps.apk.outputs.path }}
-          if-no-files-found: error
-
-      - name: Create GitHub release with APK
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ${{ steps.apk.outputs.path }}
-          generate_release_notes: true
+          path: app/build/outputs/apk/debug/app-debug.apk
