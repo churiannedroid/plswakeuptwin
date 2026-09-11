@@ -36,6 +36,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".WakeActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <!-- foregroundServiceType="specialUse": this service doesn't fit any
              of the more specific Android 14 foreground-service categories
              (it's not media, location, camera, etc.) — it's continuously
