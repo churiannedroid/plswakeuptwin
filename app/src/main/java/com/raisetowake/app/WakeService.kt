@@ -31,7 +31,8 @@ class WakeService : Service() {
         super.onCreate()
         createNotificationChannel()
 
-        motionDetector = MotionDetector(this) {
+        val sensitivity = Prefs.getSensitivity(this)
+        motionDetector = MotionDetector(this, sensitivity) {
             wakeScreen()
         }
 
@@ -117,5 +118,13 @@ class WakeService : Service() {
     companion object {
         private const val CHANNEL_ID = "raise_to_wake_channel"
         private const val NOTIFICATION_ID = 1001
+
+        fun startIntent(context: Context): Intent {
+            return Intent(context, WakeService::class.java)
+        }
+
+        fun stopIntent(context: Context): Intent {
+            return Intent(context, WakeService::class.java)
+        }
     }
 }
