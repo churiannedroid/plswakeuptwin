@@ -42,19 +42,23 @@ class MotionDetector(
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event == null || event.sensor.type != Sensor.TYPE_ACCELEROMETER) return
+    if (event == null || event.sensor.type != Sensor.TYPE_ACCELEROMETER) return
 
-        val x = event.values[0]
-        val y = event.values[1]
-        val z = event.values[2]
-        val magnitude = sqrt(x * x + y * y + z * z)
+    val x = event.values[0]
+    val y = event.values[1]
+    val z = event.values[2]
+    val magnitude = sqrt(x * x + y * y + z * z)
 
-        if (!isInitialized) {
-            lastZ = z
-            lastMagnitude = magnitude
-            isInitialized = true
-            return
-        }
+    android.util.Log.d("MotionDetector", "x=$x y=$y z=$z fallingZ=${lastZ - z}")
+
+    if (!isInitialized) {
+        lastZ = z
+        lastMagnitude = magnitude
+        isInitialized = true
+        return
+    }
+
+    // ... rest of the function stays the same
 
         // Z DROPS as the phone rotates from lying flat toward upright —
         // so the trigger direction is (lastZ - z), not (z - lastZ).
