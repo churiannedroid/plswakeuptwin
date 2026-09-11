@@ -71,7 +71,7 @@ class MotionDetector(
         // Lift gesture: Z falling away from "flat" toward "upright",
         // a real motion burst (not just noise), and Y indicating the
         // phone is now tilted toward vertical (rejects pocket jostling).
-        if (cooledDown && fallingZ > deltaThreshold && deltaMagnitude > (deltaThreshold * 0.5f)) {
+        if (cooledDown && fallingZ < -deltaThreshold && deltaMagnitude > (deltaThreshold * 0.5f) && y > 1.5f) {
             lastTriggerTime = now
             onRaiseDetected()
         }
