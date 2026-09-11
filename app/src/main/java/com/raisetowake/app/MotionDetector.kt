@@ -52,16 +52,18 @@ class MotionDetector(
             return
         }
 
-        val deltaZ = z - lastZ
+        // Z DROPS as the phone rotates from lying flat toward upright —
+        // so the trigger direction is (lastZ - z), not (z - lastZ).
+        val fallingZ = lastZ - z
         val deltaMagnitude = abs(magnitude - lastMagnitude)
 
         val now = System.currentTimeMillis()
         val cooledDown = (now - lastTriggerTime) > COOLDOWN_MS
 
-        // Lift gesture: rotation from flat toward upright (rising Z),
-        // paired with a motion burst above the sensitivity threshold,
-        // and a minimum upward-facing tilt to reject pocket jostling.
-        if (cooledDown && deltaZ > deltaThreshold && deltaMagnitude > (deltaThreshold * 0.5f) && y > 1.5f) {
+        // Lift gesture: Z falling away from "flat" toward "upright",
+        // a real motion burst (not just noise), and Y indicating the
+        // phone is now tilted toward vertical (rejects pocket jostling).
+        if (cooledDown && fallingZ > deltaThreshold && deltaMagnitude > (deltaThreshold * 0.5f) && y > 1.5f) {
             lastTriggerTime = now
             onRaiseDetected()
         }
