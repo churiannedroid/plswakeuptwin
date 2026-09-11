@@ -1,11 +1,11 @@
 package com.raisetowake.app
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 
-class WakeActivity : AppCompatActivity() {
+class WakeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
